@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class PlayerStateMachine : StateMachine
 {
-    // Start is called before the first frame update
-    void Start()
+    //field before serailzed will turn it into a field then serilize it for us
+ [field:SerializeField] public InputReader InputReader { get; private set;} // Rules are public getting reader and privately setting it
+  private  void Start()
     {
-        
+        SwitchState(new TestPlayerState(this));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 }
