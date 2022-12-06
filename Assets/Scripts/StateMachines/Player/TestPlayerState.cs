@@ -8,25 +8,26 @@ public class TestPlayerState : PlayerBaseState
     private float timeInState = 0.0f;
     public override void Enter()
     {
-        stateMachine.InputReader.JumpEvent += Enter;
+       
     }
 
     public override void Tick(float deltaTime)
     {
-        timeInState += Time.deltaTime;
-        
-        Debug.Log(timeInState);
-        OnJump();
+        Vector3 movement = new Vector3();
+        movement.x = stateMachine.InputReader.MovementValue.x;
+        movement.y = 0;
+        movement.z = stateMachine.InputReader.MovementValue.y;
+
+        stateMachine.characterController.Move(movement * stateMachine.FreeLookMovementSpeed * Time.deltaTime);
+
+        if (stateMachine.InputReader.MovementValue == Vector2.zero) { return; } // no calculations if not moving
+
+        stateMachine.transform.rotation = Quaternion.LookRotation(movement);
     }
 
-    private void OnJump()
-    {
-       
-        stateMachine.SwitchState(new TestPlayerState(stateMachine)); 
-    }
 
     public override void Exit()
     {
-        stateMachine.InputReader.JumpEvent += Exit;
+      
     }
 }
